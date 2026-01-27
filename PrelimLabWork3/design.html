@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prelim Grade Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1a1a1a;
+            border-radius: 8px;
+            border: 2px solid #8B0000;
+            max-width: 600px;
+            width: 100%;
+            padding: 35px;
+        }
+
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #cccccc;
+            margin-bottom: 35px;
+            font-size: 13px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #2a2a2a;
+            color: #ffffff;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        input[type="number"]::placeholder {
+            color: #666;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .calculate-btn {
+            background: #8B0000;
+            color: #FFD700;
+        }
+
+        .reset-btn {
+            background: #FFD700;
+            color: #8B0000;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #0a0a0a;
+            border-radius: 4px;
+            border: 1px solid #333;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h2 {
+            color: #FFD700;
+            margin-bottom: 18px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #aaa;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .result-value {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .required-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #8B0000;
+        }
+
+        .required-item {
+            background: #1a1a1a;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 14px;
+            border: 1px solid #444;
+        }
+
+        .required-item h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .required-item .score {
+            font-size: 26px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .required-item .remark {
+            color: #bbb;
+            font-size: 13px;
+        }
+
+        .pass-item .score {
+            color: #4CAF50;
+        }
+
+        .excellent-item .score {
+            color: #FFD700;
+        }
+
+        .impossible {
+            color: #ff4444 !important;
+        }
+
+        .error {
+            background: #2a1a1a;
+            color: #ffcccc;
+            padding: 14px;
+            border-radius: 4px;
+            margin-top: 20px;
+            border-left: 3px solid #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PRELIM GRADE CALCULATOR</h1>
+        <p class="subtitle">Calculate your required exam score to pass or achieve excellence</p>
+
+        <div class="input-group">
+            <label for="attendances">Number of Attendances:</label>
+            <input type="number" id="attendances" min="0" max="12" placeholder="Enter attendances (0-12)">
+        </div>
+
+        <div class="input-group">
+            <label for="labwork1">Lab Work 1 Grade:</label>
+            <input type="number" id="labwork1" min="0" max="100" step="0.01" placeholder="Enter grade (0-100)">
+        </div>
+
+        <div class="input-group">
+            <label for="labwork2">Lab Work 2 Grade:</label>
+            <input type="number" id="labwork2" min="0" max="100" step="0.01" placeholder="Enter grade (0-100)">
+        </div>
+
+        <div class="input-group">
+            <label for="labwork3">Lab Work 3 Grade:</label>
+            <input type="number" id="labwork3" min="0" max="100" step="0.01" placeholder="Enter grade (0-100)">
+        </div>
+
+        <div class="button-group">
+            <button class="calculate-btn" onclick="calculateGrade()">Calculate</button>
+            <button class="reset-btn" onclick="Reset" 
+        ></button>
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        // Constants for grading breakdown
+        const ATTENDANCE_WEIGHT = 0.40;
+        const LABWORK_WEIGHT = 0.60;
+        const CLASS_STANDING_WEIGHT = 0.70;
+        const PRELIM_EXAM_WEIGHT = 0.30;
+        const PASSING_GRADE = 75.0;
+        const EXCELLENT_GRADE = 100.0;
+        const TOTAL_CLASSES = 12;
+
+        function calculateGrade() {
+            // Get input values
+            const attendances = parseFloat(document.getElementById('attendances').value);
+            const labWork1 = parseFloat(document.getElementById('labwork1').value);
+            const labWork2 = parseFloat(document.getElementById('labwork2').value);
+            const labWork3 = parseFloat(document.getElementById('labwork3').value);
+
+            // Validate inputs
+            if (isNaN(attendances) || isNaN(labWork1) || isNaN(labWork2) || isNaN(labWork3)) {
+                showError('Please fill in all fields with valid numbers.');
+                return;
+            }
+
+            if (attendances < 0 || attendances > TOTAL_CLASSES) {
+                showError(`Attendances must be between 0 and ${TOTAL_CLASSES}.`);
+                return;
+            }
+
+            if (labWork1 < 0 || labWork1 > 100 || labWork2 < 0 || labWork2 > 100 || labWork3 < 0 || labWork3 > 100) {
+                showError('Lab work grades must be between 0 and 100.');
+                return;
+            }
+
+            // Formula 1: Lab Work Average
+            const labWorkAverage = (labWork1 + labWork2 + labWork3) / 3.0;
+
+            // Calculate Attendance Score (out of 100)
+            const attendanceScore = (attendances / TOTAL_CLASSES) * 100.0;
+
+            // Formula 2: Class Standing
+            const classStanding = (ATTENDANCE_WEIGHT * attendanceScore) + (LABWORK_WEIGHT * labWorkAverage);
+
+            // Formula 3: Calculate required Prelim Exam score
+            const requiredExamToPass = (PASSING_GRADE - (CLASS_STANDING_WEIGHT * classStanding)) / PRELIM_EXAM_WEIGHT;
+            const requiredExamToExcel = (EXCELLENT_GRADE - (CLASS_STANDING_WEIGHT * classStanding)) / PRELIM_EXAM_WEIGHT;
+
+            // Display results
+            displayResults(attendanceScore, attendances, labWork1, labWork2, labWork3, labWorkAverage, classStanding, requiredExamToPass, requiredExamToExcel);
+        }
+
+        function displayResults(attendanceScore, attendances, labWork1, labWork2, labWork3, labWorkAverage, classStanding, requiredExamToPass, requiredExamToExcel) {
+            const resultsDiv = document.getElementById('results');
+            
+            let passRemark = '';
+            let passClass = 'pass-item';
+            if (requiredExamToPass > 100) {
+                passRemark = 'It is mathematically impossible to pass. Your current class standing is too low.';
+                passClass += ' impossible';
+            } else if (requiredExamToPass < 0) {
+                passRemark = 'You will pass regardless of your Prelim Exam score!';
+            } else {
+                passRemark = `You need to score at least ${requiredExamToPass.toFixed(2)} on the Prelim Exam to pass.`;
+            }
+
+            let excellentRemark = '';
+            let excellentClass = 'excellent-item';
+            if (requiredExamToExcel > 100) {
+                excellentRemark = 'It is mathematically impossible to achieve an excellent grade.';
+                excellentClass += ' impossible';
+            } else if (requiredExamToExcel <= 100 && requiredExamToExcel >= 0) {
+                excellentRemark = `You need to score ${requiredExamToExcel.toFixed(2)} on the Prelim Exam for an excellent grade.`;
+            }
+
+            resultsDiv.innerHTML = `
+                <h2>Your Results</h2>
+                
+                <div class="result-item">
+                    <span class="result-label">Attendance Score:</span>
+                    <span class="result-value">${attendanceScore.toFixed(2)}% (${attendances}/${TOTAL_CLASSES})</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Lab Work 1:</span>
+                    <span class="result-value">${labWork1.toFixed(2)}</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Lab Work 2:</span>
+                    <span class="result-value">${labWork2.toFixed(2)}</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Lab Work 3:</span>
+                    <span class="result-value">${labWork3.toFixed(2)}</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Lab Work Average:</span>
+                    <span class="result-value">${labWorkAverage.toFixed(2)}</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">Class Standing:</span>
+                    <span class="result-value">${classStanding.toFixed(2)}</span>
+                </div>
+
+                <div class="required-section">
+                    <div class="required-item ${passClass}">
+                        <h3>To PASS (75%):</h3>
+                        <div class="score">${requiredExamToPass.toFixed(2)}</div>
+                        <div class="remark">${passRemark}</div>
+                    </div>
+
+                    <div class="required-item ${excellentClass}">
+                        <h3>To achieve EXCELLENT (100%):</h3>
+                        <div class="score">${requiredExamToExcel.toFixed(2)}</div>
+                        <div class="remark">${excellentRemark}</div>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.classList.add('show');
+        }
+
+        function showError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="error">${message}</div>`;
+            resultsDiv.classList.add('show');
+        }
+
+        function resetForm() {
+            document.getElementById('attendances').value = '';
+            document.getElementById('labwork1').value = '';
+            document.getElementById('labwork2').value = '';
+            document.getElementById('labwork3').value = '';
+            document.getElementById('results').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
